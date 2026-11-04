@@ -1,0 +1,15 @@
+.venv/
+.git/
+.github/
+__pycache__/
+*.pyc
+tests/
+scripts/
+dist/
+instalar/
+skill/
+*.bat
+*.command
+.pytest_cache/
+.gitattributes
+.gitignore

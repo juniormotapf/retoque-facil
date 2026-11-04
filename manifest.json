@@ -1,0 +1,54 @@
+{
+  "manifest_version": "0.4",
+  "name": "retoque-facil",
+  "display_name": "Retoque Fácil",
+  "version": "0.1.0",
+  "description": "Tira espinhas do rosto e limpa fundo de estúdio, com o Claude no comando. Salva TIFF com a camada original embaixo e a retocada em cima.",
+  "long_description": "O Retoque Fácil roda no seu computador, sem internet e sem placa de vídeo. Ele encontra o rosto, marca as espinhas (preservando pintas e sardas), remove cada uma usando pele limpa da vizinhança, suaviza a pele de leve sem apagar os poros e limpa sujeira, poeira e dobras de fundos lisos de estúdio. O resultado é salvo em TIFF com duas camadas (Original e Retocada), na mesma resolução e profundidade de cor da foto. Coloque as fotos em Documentos > Retoque Facil > 1 - Fotos para retocar e peça ao Claude: Retoque minhas fotos.",
+  "author": {
+    "name": "Elias",
+    "url": "https://github.com/juniormotapf"
+  },
+  "license": "MIT",
+  "keywords": ["foto", "retoque", "espinha", "pele", "fundo", "estudio", "tiff", "retrato"],
+  "server": {
+    "type": "uv",
+    "entry_point": "server.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": ["run", "--directory", "${__dirname}", "--python", "3.12", "server.py"],
+      "env": {
+        "RETOQUE_PASTA": "${user_config.pasta}"
+      }
+    }
+  },
+  "user_config": {
+    "pasta": {
+      "type": "directory",
+      "title": "Pasta do Retoque Fácil",
+      "description": "Onde ficam as pastas '1 - Fotos para retocar' e '2 - Fotos prontas'. Pode deixar como está.",
+      "default": "${DOCUMENTS}/Retoque Facil",
+      "required": false
+    }
+  },
+  "tools": [
+    {"name": "listar_fotos", "description": "Mostra as pastas e as fotos prontas para retocar"},
+    {"name": "analisar_foto", "description": "Acha o rosto, marca as espinhas e avalia o fundo; devolve uma prévia numerada"},
+    {"name": "ajustar_marcacoes", "description": "Desmarca, inclui ou procura espinhas antes de aplicar"},
+    {"name": "aplicar_retoque", "description": "Remove as espinhas, suaviza a pele e limpa o fundo; mostra antes e depois"},
+    {"name": "ver_detalhe", "description": "Mostra antes e depois de perto, numa célula da grade"},
+    {"name": "salvar_tiff", "description": "Salva TIFF com a camada original embaixo e a retocada em cima"},
+    {"name": "abrir_no_computador", "description": "Abre a pasta de fotos ou um arquivo na tela"},
+    {"name": "processar_lote", "description": "Retoca várias fotos de uma vez, em segundo plano"},
+    {"name": "status_lote", "description": "Mostra o andamento do lote"}
+  ],
+  "prompts": [
+    {"name": "retocar_fotos", "description": "Começa o retoque guiado das fotos", "text": "Quero retocar minhas fotos: tirar espinhas do rosto e limpar o fundo de estúdio. Me guie passo a passo, em linguagem simples, e me mostre o antes e depois antes de salvar."}
+  ],
+  "compatibility": {
+    "platforms": ["win32", "darwin"],
+    "runtimes": {
+      "python": ">=3.10,<3.14"
+    }
+  }
+}

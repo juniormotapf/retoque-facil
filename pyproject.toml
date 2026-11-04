@@ -1,0 +1,30 @@
+[project]
+name = "retoque-facil"
+version = "0.1.0"
+description = "Tira espinhas e limpa fundo de estúdio, com o Claude no comando. Salva TIFF com a camada original embaixo e a retocada em cima."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10,<3.14"
+authors = [{ name = "Elias" }]
+dependencies = [
+    "mcp>=2.3,<3",
+    "mediapipe>=1.2,<2",
+    "numpy>=1.26",
+    "opencv-contrib-python>=4.9",
+    "pillow>=10",
+    "tifffile>=2024.1",
+    "imagecodecs>=2024.1",
+    "anyio>=4",
+    "rawpy>=0.21",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "psd-tools>=1.9"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]

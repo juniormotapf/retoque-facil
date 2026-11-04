@@ -1,0 +1,30 @@
+name: Testes
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  testes:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Bibliotecas gráficas (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libgl1 libegl1 libgles2
+      - name: Instalar dependências
+        run: uv sync
+      - name: Testes
+        run: uv run pytest -q
+      - name: Simular o instalador (sem mexer no Claude)
+        run: uv run --no-project --python 3.12 instalar/instalador.py --sem-claude
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validar manifesto da extensão
+        run: npx -y @anthropic-ai/mcpb validate manifest.json
