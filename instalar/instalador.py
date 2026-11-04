@@ -156,7 +156,11 @@ def preparar_skill(destino: Path) -> Path:
     with zipfile.ZipFile(zipado, "w", zipfile.ZIP_DEFLATED) as z:
         for arq in pasta.rglob("*"):
             if arq.is_file():
-                z.write(arq, Path("retoque-de-pele") / arq.relative_to(pasta))
+                nome = (Path("retoque-de-pele") / arq.relative_to(pasta)).as_posix()
+                if arq.suffix == ".md":  # quebra de linha Unix, mesmo vinda de um clone no Windows
+                    z.writestr(nome, arq.read_text(encoding="utf-8").replace("\r\n", "\n"))
+                else:
+                    z.write(arq, nome)
     return zipado
 
 
